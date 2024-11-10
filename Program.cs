@@ -4,11 +4,11 @@ to update the value. The code then prints the updated value to the console.
 */
 int x = 5;
 
-ChangeValue(x);
+ChangeValue();
 
 Console.WriteLine(x);
 
-void ChangeValue(int value) 
+void ChangeValue() 
 {
-    value = 10;
+    x = 10;
 }
