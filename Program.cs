@@ -1,4 +1,4 @@
-﻿bool exit = false;
+﻿bool exit = true;
 var rand = new Random();
 int num1 = 5;
 int num2 = 5;
