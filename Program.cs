@@ -37,7 +37,7 @@ readResult = Console.ReadLine();
 static int SumValues(int[] numbers, int n)
 {
     int sum = 0;
-    for (int i = n; i < numbers.Length; i++)
+    for (int i = n - 1; i < numbers.Length; i++)
     {
         sum += numbers[i];
     }
