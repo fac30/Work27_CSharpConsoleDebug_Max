@@ -1,69 +1,61 @@
-﻿// Prompt the user for the lower and upper bounds
-Console.Write("Enter the lower bound: ");
-int lowerBound = int.Parse(Console.ReadLine());
-
-Console.Write("Enter the upper bound: ");
-int upperBound = int.Parse(Console.ReadLine());
-
-decimal averageValue = 0;
-
-bool exit = false;
-
-do
+﻿string[][] userEnteredValues = new string[][]
 {
-    try
-    {
-        // Calculate the sum of the even numbers between the bounds
-        averageValue = AverageOfEvenNumbers(lowerBound, upperBound);
+            new string[] { "1", "2", "3"},
+            new string[] { "1", "two", "3"},
+            new string[] { "0", "1", "2"}
+};
 
-        // Display the result to the user
-        Console.WriteLine($"The average of even numbers between {lowerBound} and {upperBound} is {averageValue}.");
+try
+{
+    Workflow1(userEnteredValues);
+    Console.WriteLine("'Workflow1' completed successfully.");
+}
+catch (DivideByZeroException ex)
+{
+    Console.WriteLine("An error occurred during 'Workflow1'.");
+    Console.WriteLine(ex.Message);
+}
 
-        exit = true;
-    }
-    catch (ArgumentOutOfRangeException ex)
+static void Workflow1(string[][] userEnteredValues)
+{
+
+    foreach (string[] userEntries in userEnteredValues)
     {
-        Console.WriteLine("An error has occurred.");
-        Console.WriteLine(ex.Message);
-        Console.WriteLine($"The upper bound must be greater than {lowerBound}");
-        Console.Write($"Enter a new upper bound (or enter Exit to quit): ");
-        string? userResponse = Console.ReadLine();
-        if (userResponse.ToLower().Contains("exit"))
+        try
         {
-            exit = true;
+            Process1(userEntries);
+            Console.WriteLine("'Process1' completed successfully.");
+            Console.WriteLine();
+        }
+        catch (FormatException ex)
+        {
+            Console.WriteLine("'Process1' encountered an issue, process aborted.");
+            Console.WriteLine(ex.Message);
+            Console.WriteLine();
+        }
+    }
+}
+
+static void Process1(String[] userEntries)
+{
+    int valueEntered;
+
+    foreach (string userValue in userEntries)
+    {
+
+        if (!int.TryParse(userValue, out valueEntered))
+        {
+            FormatException intFormatException = new("Invalid data. User input values must be valid integers.");
+            throw intFormatException;
+        }
+        else if (int.Parse(userValue) == 0)
+        {
+            DivideByZeroException zeroFormatException = new("Invalid data. User input values must be non-zero values.");
+            throw zeroFormatException;
         }
         else
         {
-            exit = false;
-            upperBound = int.Parse(userResponse);
+            valueEntered = int.Parse(userValue);
         }
     }
-} while (exit == false);
-
-// Wait for user input
-Console.ReadLine();
-
-static decimal AverageOfEvenNumbers(int lowerBound, int upperBound)
-{
-    if (lowerBound >= upperBound)
-    {
-        throw new ArgumentOutOfRangeException(nameof(upperBound), "ArgumentOutOfRangeException: upper bound must be greater than lower bound.");
-    }
-
-    int sum = 0;
-    int count = 0;
-    decimal average = 0;
-
-    for (int i = lowerBound; i <= upperBound; i++)
-    {
-        if (i % 2 == 0)
-        {
-            sum += i;
-            count++;
-        }
-    }
-
-    average = (decimal)sum / count;
-
-    return average;
 }
